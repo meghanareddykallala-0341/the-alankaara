@@ -1,0 +1,364 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ collection_title }} | THE ALANKAARA</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: #fffaf7;
+            color: #4d1b2d;
+            font-family: 'Poppins', Arial, sans-serif;
+        }
+
+        .collection-hero {
+            padding: 35px 20px 25px;
+            text-align: center;
+            background: linear-gradient(180deg, #fff4f1, #fffaf7);
+        }
+
+        .collection-eyebrow {
+            color: #a34c69;
+            font-size: 10px;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+        }
+
+        .collection-hero h1 {
+            margin: 8px 0;
+            color: #762640;
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-size: clamp(32px, 4vw, 44px);
+            font-weight: 500;
+        }
+
+        .collection-hero p {
+            max-width: 500px;
+            margin: 0 auto;
+            color: #806572;
+            font-size: 12px;
+            line-height: 1.7;
+        }
+
+        .collection-page {
+            width: min(1100px, 100%);
+            margin: 0 auto;
+            padding: 0 24px 55px;
+        }
+
+        .collection-breadcrumb {
+            margin: 20px 0;
+            color: #967984;
+            font-size: 12px;
+        }
+
+        .collection-breadcrumb a {
+            color: #762640;
+            text-decoration: none;
+        }
+
+        .collection-breadcrumb a:hover {
+            text-decoration: underline;
+        }
+
+        .collection-toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #ead6d9;
+        }
+
+        .collection-toolbar h2 {
+            margin: 0;
+            color: #762640;
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-size: 26px;
+            font-weight: 500;
+        }
+
+        .product-count {
+            color: #967984;
+            font-size: 12px;
+            white-space: nowrap;
+        }
+
+        /* Compact product cards */
+        .collection-page .product-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 20px;
+            align-items: start;
+        }
+
+        .collection-page .product-card {
+            min-width: 0;
+            overflow: hidden;
+            background: #fff;
+            border: 1px solid #ead6d9;
+            border-radius: 8px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .collection-page .product-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(77, 27, 45, 0.09);
+        }
+
+        .collection-page .product-image-link {
+            display: block;
+            height: 230px;
+            overflow: hidden;
+            background: linear-gradient(135deg, #f8e9e9, #ead2d6);
+        }
+
+        .collection-page .product-image {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+
+        .collection-page .product-card:hover .product-image {
+            transform: scale(1.03);
+        }
+
+        .collection-page .product-image-placeholder {
+            display: grid;
+            place-items: center;
+            width: 100%;
+            height: 100%;
+            padding: 12px;
+            color: #a34c69;
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-size: 17px;
+            text-align: center;
+        }
+
+        .collection-page .product-info {
+            padding: 13px;
+        }
+
+        .collection-page .product-name {
+            margin: 0 0 7px;
+            color: #4d1b2d;
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-size: 19px;
+            font-weight: 500;
+            line-height: 1.25;
+        }
+
+        .collection-page .product-price {
+            margin-bottom: 11px;
+            color: #762640;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .collection-page .product-link {
+            display: block;
+            padding: 9px 6px;
+            border: 1px solid #762640;
+            border-radius: 4px;
+            color: #762640;
+            text-align: center;
+            font-size: 10px;
+            letter-spacing: 0.4px;
+            text-decoration: none;
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .collection-page .product-link:hover {
+            background: #762640;
+            color: #fff;
+        }
+
+        .empty-collection {
+            padding: 40px 20px;
+            background: #fff;
+            border: 1px solid #ead6d9;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .empty-collection h2 {
+            color: #762640;
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-size: 28px;
+            font-weight: 500;
+        }
+
+        .empty-collection p {
+            color: #806572;
+            font-size: 12px;
+            line-height: 1.8;
+        }
+
+        .back-button {
+            display: inline-block;
+            margin-top: 12px;
+            padding: 10px 20px;
+            background: #762640;
+            border-radius: 4px;
+            color: white;
+            font-size: 11px;
+            text-decoration: none;
+        }
+
+        .back-button:hover {
+            background: #4d1b2d;
+        }
+
+        .collection-footer {
+            padding: 22px 15px;
+            background: #4d1b2d;
+            color: #f8e9ed;
+            text-align: center;
+            font-size: 11px;
+        }
+
+        @media (max-width: 850px) {
+            .collection-page .product-grid {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+                gap: 16px;
+            }
+
+            .collection-page .product-image-link {
+                height: 210px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .collection-page {
+                padding: 0 14px 40px;
+            }
+
+            .collection-hero {
+                padding: 30px 15px 22px;
+            }
+
+            .collection-page .product-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 12px;
+            }
+
+            .collection-page .product-image-link {
+                height: 175px;
+            }
+
+            .collection-page .product-info {
+                padding: 10px;
+            }
+
+            .collection-page .product-name {
+                font-size: 17px;
+            }
+
+            .collection-page .product-price {
+                font-size: 12px;
+            }
+
+            .collection-page .product-link {
+                padding: 9px 4px;
+                font-size: 9px;
+            }
+
+            .collection-toolbar h2 {
+                font-size: 22px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+
+<!-- HEADER -->
+{% include "boutique/partials/navbar.html" %}
+
+
+<section class="collection-hero">
+    <span class="collection-eyebrow">THE ALANKAARA COLLECTION</span>
+    <h1>{{ collection_title }}</h1>
+    <p>
+        Discover beautiful pieces inspired by Indian tradition
+        and designed to celebrate your personal style.
+    </p>
+</section>
+
+<main class="collection-page">
+
+    <div class="collection-breadcrumb">
+        <a href="{% url 'home' %}">Home</a>
+        &nbsp; / &nbsp;
+        <a href="{% url 'all_collections' %}">Collections</a>
+        &nbsp; / &nbsp;
+        <span>{{ collection_title }}</span>
+    </div>
+
+    <div class="collection-toolbar">
+        <h2>Explore {{ collection_title }}</h2>
+        <span class="product-count">
+            {{ products|length }} product{{ products|length|pluralize }}
+        </span>
+    </div>
+
+    {% if products %}
+        <div class="product-grid">
+            {% for product in products %}
+                <article class="product-card">
+                    <a href="{% url 'product_detail' product.id %}" class="product-image-link">
+                        {% if product.image %}
+                            <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-image">
+                        {% else %}
+                            <div class="product-image-placeholder">THE ALANKAARA</div>
+                        {% endif %}
+                    </a>
+
+                    <div class="product-info">
+                        <h3 class="product-name">{{ product.name }}</h3>
+                        <div class="product-price">₹{{ product.price|floatformat:2 }}</div>
+                        <a href="{% url 'product_detail' product.id %}" class="product-link">
+                            VIEW DETAILS →
+                        </a>
+                    </div>
+                </article>
+            {% endfor %}
+        </div>
+    {% else %}
+        <section class="empty-collection">
+            <h2>Something Beautiful Is Coming</h2>
+            <p>
+                We haven't added products to this collection yet.
+                Please explore our other collections.
+            </p>
+            <a href="{% url 'all_collections' %}" class="back-button">
+                Explore Collections
+            </a>
+        </section>
+    {% endif %}
+
+</main>
+
+<footer class="collection-footer">
+    THE ALANKAARA · Crafted with love, inspired by tradition.
+</footer>
+
+</body>
+</html>

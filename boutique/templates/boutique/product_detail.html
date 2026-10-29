@@ -1,0 +1,254 @@
+
+{% extends "boutique/base.html" %}
+
+{% block title %}{{ product.name }} | THE ALANKAARA{% endblock %}
+
+{% block extra_css %}
+<style>
+.product-detail-page {
+    background: #fffaf7;
+    padding: 55px 6%;
+    color: #63233b;
+    font-family: "Poppins", sans-serif;
+}
+
+.product-detail-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 55px;
+    align-items: start;
+}
+
+.product-detail-image {
+    width: 100%;
+    min-height: 400px;
+    aspect-ratio: 4 / 5;
+    background: #f1e5e3;
+    overflow: hidden;
+}
+
+.product-detail-image img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    min-height: 400px;
+    object-fit: cover;
+}
+
+.product-detail-placeholder {
+    min-height: 400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background: linear-gradient(145deg, #f7e9e7, #ead4d8);
+    text-align: center;
+    color: #754353;
+}
+
+.product-detail-placeholder strong {
+    font-family: "Cormorant Garamond", serif;
+    font-size: 27px;
+    letter-spacing: 2px;
+}
+
+.product-detail-info {
+    padding: 12px 0;
+}
+
+.product-detail-category {
+    margin: 0 0 12px;
+    color: #98566a;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.product-detail-info h1 {
+    margin: 0 0 16px;
+    color: #63233b;
+    font-family: "Cormorant Garamond", serif;
+    font-size: clamp(34px, 4vw, 48px);
+    font-weight: 500;
+    line-height: 1.15;
+}
+
+.product-detail-price {
+    margin: 0 0 20px;
+    color: #762640;
+    font-family: "Cormorant Garamond", serif;
+    font-size: 30px;
+    font-weight: 600;
+}
+
+.product-detail-description {
+    margin: 0 0 25px;
+    color: #806d75;
+    font-size: 13px;
+    line-height: 1.9;
+}
+
+.product-detail-colour {
+    margin-bottom: 24px;
+    font-size: 12px;
+}
+
+.product-detail-colour strong {
+    color: #63233b;
+}
+
+.product-size-label {
+    display: block;
+    margin-bottom: 9px;
+    color: #63233b;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.product-size-select {
+    display: block;
+    width: 100%;
+    min-height: 48px;
+    margin-bottom: 20px;
+    padding: 12px 14px;
+    border: 1px solid #d9c4ca;
+    border-radius: 2px;
+    background: #fff;
+    color: #63233b;
+    font-family: "Poppins", sans-serif;
+    font-size: 12px;
+}
+
+.product-size-select:focus {
+    outline: 2px solid #b98596;
+    outline-offset: 2px;
+}
+
+.product-add-button {
+    display: block;
+    width: 100%;
+    min-height: 49px;
+    padding: 14px 18px;
+    border: 1px solid #762640;
+    border-radius: 2px;
+    background: #762640;
+    color: white;
+    font-family: "Poppins", sans-serif;
+    font-size: 12px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.product-add-button:hover {
+    background: #542033;
+}
+
+.product-back-link {
+    display: inline-block;
+    margin-top: 22px;
+    color: #805364;
+    font-size: 11px;
+    text-decoration: none;
+}
+
+.product-back-link:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 700px) {
+    .product-detail-page {
+        padding: 30px 5%;
+    }
+
+    .product-detail-container {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 25px;
+    }
+
+    .product-detail-image,
+    .product-detail-image img,
+    .product-detail-placeholder {
+        min-height: 300px;
+    }
+
+    .product-detail-info h1 {
+        font-size: 36px;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="product-detail-page">
+    <div class="product-detail-container">
+
+        <div class="product-detail-image">
+            {% if product.image %}
+                <img src="{{ product.image.url }}"
+                     alt="{{ product.name }}">
+            {% else %}
+                <div class="product-detail-placeholder">
+                    <strong>THE ALANKAARA</strong>
+                    <p>Product image coming soon</p>
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="product-detail-info">
+            <p class="product-detail-category">
+                {{ product.get_category_display }}
+            </p>
+
+            <h1>{{ product.name }}</h1>
+
+            <p class="product-detail-price">
+                ₹{{ product.price|floatformat:2 }}
+            </p>
+
+            <p class="product-detail-description">
+                {{ product.description }}
+            </p>
+
+            {% if product.color %}
+                <p class="product-detail-colour">
+                    <strong>Colour:</strong> {{ product.color }}
+                </p>
+            {% endif %}
+
+            <form method="post"
+                  action="{% url 'add_to_cart' product.id %}">
+                {% csrf_token %}
+
+                <label for="product-size" class="product-size-label">
+                    Select Size
+                </label>
+
+                <select id="product-size"
+                        name="size"
+                        class="product-size-select"
+                        required>
+                    {% for size in product.available_sizes %}
+                        <option value="{{ size }}">
+                            {{ size }}
+                        </option>
+                    {% empty %}
+                        <option value="Free Size">Free Size</option>
+                    {% endfor %}
+                </select>
+
+                <button type="submit" class="product-add-button">
+                    Add to Cart
+                </button>
+            </form>
+
+            <a href="{% url 'home' %}" class="product-back-link">
+                ← Continue shopping
+            </a>
+        </div>
+
+    </div>
+</section>
+{% endblock %}

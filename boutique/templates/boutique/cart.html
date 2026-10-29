@@ -1,0 +1,163 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Bag | THE ALANKAARA</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <style>
+        .cart-page{width:min(1150px,92%);margin:40px auto 65px;color:#4d1b2d;font-family:'Poppins',sans-serif}
+        .cart-heading{padding:35px 20px;margin-bottom:30px;text-align:center;background:linear-gradient(135deg,#fff4f1,#f5e3e7);border-radius:12px}
+        .section-label{color:#a34c69;font-size:11px;letter-spacing:3px}
+        .cart-heading h1{margin:10px 0;font:500 clamp(36px,5vw,50px) 'Cormorant Garamond',Georgia,serif}
+        .cart-heading p{color:#76545f;font-size:13px}
+        .cart-layout{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:24px;align-items:start}
+        .cart-items,.order-summary{padding:23px;background:#fffaf7;border:1px solid #ead6d9;border-radius:12px}
+        .cart-item{display:grid;grid-template-columns:115px minmax(0,1fr);gap:18px;padding:20px 0;border-bottom:1px solid #f0e2e3}
+        .cart-item:first-child{padding-top:0}
+        .cart-item:last-child{padding-bottom:0;border-bottom:none}
+        .product-image{width:115px;height:140px;object-fit:cover;background:#fff4f1;border-radius:8px}
+        .product-placeholder{display:flex;align-items:center;justify-content:center;padding:10px;color:#a34c69;font-size:11px;text-align:center}
+        .product-name{margin-bottom:8px;font:500 25px 'Cormorant Garamond',Georgia,serif}
+        .product-price{margin-bottom:8px;color:#762640;font-size:14px}
+        .product-size{margin-bottom:12px;color:#76545f;font-size:12px}
+        .quantity-label{display:block;margin-bottom:6px;color:#8b6873;font-size:12px}
+        .quantity-form{display:flex;align-items:end;flex-wrap:wrap;gap:9px}
+        .quantity-input{width:70px;padding:9px;border:1px solid #d8b9c2;border-radius:5px;color:#4d1b2d;font:inherit;font-size:13px}
+        .small-button{padding:10px 14px;border:none;border-radius:5px;cursor:pointer;font:inherit;font-size:12px}
+        .update-button,.checkout-button,.shop-button{background:#762640;color:white}
+        .update-button:hover,.checkout-button:hover,.shop-button:hover{background:#4d1b2d}
+        .item-subtotal{margin-top:13px;color:#76545f;font-size:12px}
+        .item-subtotal strong{color:#4d1b2d}
+        .remove-form{margin-top:8px}
+        .remove-button{padding:5px 0;background:transparent;color:#a34c69;text-decoration:underline}
+        .order-summary h2{margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid #ead6d9;font:500 29px 'Cormorant Garamond',Georgia,serif}
+        .summary-row{display:flex;justify-content:space-between;gap:10px;margin-bottom:16px;color:#76545f;font-size:13px}
+        .summary-total{margin-top:18px;padding-top:17px;border-top:1px solid #ead6d9;color:#4d1b2d;font-size:16px;font-weight:600}
+        .summary-note{color:#8b6873;font-size:11px;line-height:1.8}
+        .checkout-button,.shop-button{display:block;padding:14px;margin-top:22px;border-radius:5px;text-align:center;text-decoration:none;font-size:12px}
+        .continue-link{display:block;margin-top:16px;color:#762640;text-align:center;text-decoration:none;font-size:12px}
+        .continue-link:hover{color:#a34c69;text-decoration:underline}
+        .empty-cart{padding:55px 20px;background:#fffaf7;border:1px solid #ead6d9;border-radius:12px;text-align:center}
+        .empty-cart h2{margin-bottom:12px;font:500 31px 'Cormorant Garamond',Georgia,serif}
+        .empty-cart p{margin-bottom:22px;color:#8b6873;font-size:13px;line-height:1.9}
+        .shop-button{display:inline-block;margin-top:0}
+        .cart-footer{padding:25px 15px;background:#4d1b2d;color:white;text-align:center;font:12px 'Poppins',sans-serif}
+        .cart-footer p{margin:5px 0}
+        .footer-copy{opacity:.75;font-size:11px}
+        @media(max-width:850px){.cart-layout{grid-template-columns:1fr}.order-summary{order:-1}}
+        @media(max-width:600px){
+            .cart-page{margin-top:25px}
+            .cart-items,.order-summary{padding:16px}
+            .cart-item{grid-template-columns:85px minmax(0,1fr);gap:12px}
+            .product-image{width:85px;height:115px}
+            .product-name{font-size:22px}
+        }
+    </style>
+</head>
+<body>
+
+
+<!-- HEADER -->
+{% include "boutique/partials/navbar.html" %}
+
+<main class="cart-page">
+    <section class="cart-heading">
+        <p class="section-label">YOUR PERSONAL SELECTION</p>
+        <h1>Your Shopping Bag</h1>
+        <p>Beautiful choices, thoughtfully collected.</p>
+    </section>
+
+    {% if items %}
+    <div class="cart-layout">
+        <section class="cart-items">
+            {% for item in items %}
+            <article class="cart-item">
+                {% if item.product.image %}
+                    <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" class="product-image">
+                {% else %}
+                    <div class="product-image product-placeholder">THE ALANKAARA</div>
+                {% endif %}
+
+                <div class="product-info">
+                    <h2 class="product-name">{{ item.product.name }}</h2>
+                    <p class="product-price">₹{{ item.product.price|floatformat:2 }}</p>
+                    <p class="product-size"><strong>Size:</strong> {{ item.size }}</p>
+
+                    <form method="POST" action="{% url 'update_cart' item.product.id %}" class="quantity-form">
+                        {% csrf_token %}
+                        <input type="hidden" name="size" value="{{ item.size }}">
+
+                        <div>
+                            <label class="quantity-label" for="quantity-{{ forloop.counter }}">Quantity</label>
+                            <input
+                                type="number"
+                                id="quantity-{{ forloop.counter }}"
+                                name="quantity"
+                                class="quantity-input"
+                                value="{{ item.quantity }}"
+                                min="0"
+                                max="99"
+                                required
+                            >
+                        </div>
+
+                        <button type="submit" class="small-button update-button">Update</button>
+                    </form>
+
+                    <p class="item-subtotal">
+                        Subtotal: <strong>₹{{ item.subtotal|floatformat:2 }}</strong>
+                    </p>
+
+                    <form method="POST" action="{% url 'remove_from_cart' item.product.id %}" class="remove-form">
+                        {% csrf_token %}
+                        <input type="hidden" name="size" value="{{ item.size }}">
+                        <button type="submit" class="small-button remove-button">Remove item</button>
+                    </form>
+                </div>
+            </article>
+            {% endfor %}
+        </section>
+
+        <aside class="order-summary">
+            <h2>Order Summary</h2>
+
+            <div class="summary-row">
+                <span>Items in bag</span>
+                <span>{{ items|length }}</span>
+            </div>
+
+            <div class="summary-row summary-total">
+                <span>Total</span>
+                <span>₹{{ total|floatformat:2 }}</span>
+            </div>
+
+            <p class="summary-note">
+                Any applicable shipping charges will be shown according to your checkout setup.
+            </p>
+
+            <a href="{% url 'checkout' %}" class="checkout-button">Proceed to Checkout</a>
+            <a href="{% url 'home' %}" class="continue-link">Continue Shopping</a>
+            <a href="{% url 'all_collections' %}" class="continue-link">Explore Collections</a>
+        </aside>
+    </div>
+    {% else %}
+    <section class="empty-cart">
+        <h2>Your bag is waiting for something beautiful</h2>
+        <p>You haven't added any products yet.<br>Explore our collections and find something you love.</p>
+        <a href="{% url 'all_collections' %}" class="shop-button">Explore Collections</a>
+    </section>
+    {% endif %}
+</main>
+
+<footer class="cart-footer">
+    <p>THE ALANKAARA — The Art of Indian Elegance</p>
+    <p class="footer-copy">&copy; {% now "Y" %} THE ALANKAARA. All rights reserved.</p>
+</footer>
+
+</body>
+</html>

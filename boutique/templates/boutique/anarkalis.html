@@ -1,0 +1,104 @@
+
+{% extends "boutique/base.html" %}
+{% load static %}
+
+{% block title %}Anarkali Collection | THE ALANKAARA{% endblock %}
+
+{% block content %}
+<main class="anarkalis-page">
+
+    <section class="anarkalis-header">
+        <p class="section-label">THE ALANKAARA COLLECTION</p>
+        <h1>Anarkalis</h1>
+        <p>Grace in every movement. Elegance in every detail.</p>
+
+        <a href="{% url 'all_collections' %}" class="anarkalis-back">
+            ← Explore All Collections
+        </a>
+    </section>
+
+    <section class="anarkalis-products">
+        <div class="section-heading">
+            <p class="section-label">MADE FOR YOUR MOMENTS</p>
+            <h2>Discover Your Style</h2>
+        </div>
+
+        <div class="products-grid">
+            {% for product in products %}
+                <article class="product-card">
+                    <a href="{% url 'product_detail' product.id %}"
+                       class="product-image">
+                        {% if product.image %}
+                            <img src="{{ product.image.url }}"
+                                 alt="{{ product.name }}">
+                        {% else %}
+                            <div class="product-image-placeholder">
+                                <span>THE ALANKAARA</span>
+                                <p>Image coming soon</p>
+                            </div>
+                        {% endif %}
+                    </a>
+
+                    <div class="product-info">
+                        <p class="product-category">
+                            {{ product.get_category_display }}
+                        </p>
+
+                        <h3>
+                            <a href="{% url 'product_detail' product.id %}">
+                                {{ product.name }}
+                            </a>
+                        </h3>
+
+                        {% if product.description %}
+                            <p class="product-description">
+                                {{ product.description }}
+                            </p>
+                        {% endif %}
+
+                        <p class="product-price">
+                            ₹{{ product.price|floatformat:2 }}
+                        </p>
+
+                        {% if product.available_sizes %}
+                            <p class="product-detail">
+                                Sizes: {{ product.available_sizes|join:", " }}
+                            </p>
+                        {% endif %}
+
+                        {% if product.color %}
+                            <p class="product-detail">
+                                Colour: {{ product.color }}
+                            </p>
+                        {% endif %}
+
+                        <a href="{% url 'product_detail' product.id %}"
+                           class="product-button">
+                            View Product
+                        </a>
+                    </div>
+                </article>
+            {% empty %}
+                <div class="empty-products">
+                    <h3>Your Anarkali story begins here</h3>
+                    <p>
+                        No Anarkali products are available yet.
+                        Add products with the Anarkalis category in
+                        your Django admin panel.
+                    </p>
+                    <a href="{% url 'all_collections' %}"
+                       class="product-button">
+                        Explore Collections
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="anarkalis-continue">
+            <a href="{% url 'all_collections' %}">
+                ← Back to Collections
+            </a>
+        </div>
+    </section>
+</main>
+{% endblock %}

@@ -1,0 +1,175 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{% block title %}THE ALANKAARA | The Art of Indian Elegance{% endblock %}</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        html {
+            width: 100%;
+            min-height: 100%;
+        }
+
+        body {
+            width: 100%;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+
+        .site-header {
+            display: block;
+            width: 100%;
+            background: #fffaf7;
+            border-bottom: 1px solid #eadbd8;
+        }
+
+        .site-header .navbar {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            gap: 24px;
+            width: 100%;
+            max-width: 1300px;
+            min-height: 82px;
+            margin: 0 auto;
+            padding: 16px 5%;
+        }
+
+        .site-header .navbar-brand {
+            color: #762640;
+            font-family: "Cormorant Garamond", serif;
+            font-size: 28px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            line-height: 1.2;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+
+        .site-header .navbar-links {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: flex-end;
+            flex-wrap: wrap;
+            gap: 18px 24px;
+        }
+
+        .site-header .navbar-links a {
+            color: #63233b;
+            font-family: "Poppins", sans-serif;
+            font-size: 12px;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+
+        .site-header .navbar-links a:hover {
+            color: #b16b82;
+        }
+
+        main.site-main {
+            display: block !important;
+            width: 100% !important;
+            max-width: none !important;
+            min-width: 0 !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            flex: none !important;
+        }
+
+        .site-footer {
+            width: 100%;
+            margin: 0;
+            padding: 30px 20px;
+            text-align: center;
+        }
+
+        .site-footer p {
+            margin: 6px 0;
+        }
+
+        .site-footer .footer-brand {
+            font-family: "Cormorant Garamond", serif;
+            letter-spacing: 2px;
+        }
+
+        @media (max-width: 800px) {
+            .site-header .navbar {
+                flex-direction: column;
+                justify-content: center;
+                gap: 14px;
+                padding: 18px 14px;
+            }
+
+            .site-header .navbar-brand {
+                font-size: 25px;
+                white-space: normal;
+                text-align: center;
+            }
+
+            .site-header .navbar-links {
+                justify-content: center;
+                gap: 12px 18px;
+            }
+        }
+    </style>
+
+    {% block extra_css %}{% endblock %}
+</head>
+
+<body>
+    <header class="site-header">
+        <nav class="navbar">
+            <a class="navbar-brand" href="/">
+                THE ALANKAARA
+            </a>
+
+            <div class="navbar-links">
+                <a href="/">Home</a>
+                <a href="/#collections">Collections</a>
+                <a href="/cart/">Cart</a>
+
+                {% if user.is_authenticated %}
+                    <a href="{% url 'my_orders' %}">My Orders</a>
+
+                    <form action="{% url 'logout' %}" method="post" style="display: inline; margin: 0;">
+                        {% csrf_token %}
+                        <button type="submit" style="border: none; background: none; padding: 0; color: #63233b; font-family: Poppins, sans-serif; font-size: 12px; cursor: pointer;">
+                            Logout
+                        </button>
+                    </form>
+                {% else %}
+                    <a href="{% url 'login' %}">Login</a>
+                    <a href="{% url 'register' %}">Register</a>
+                {% endif %}
+            </div>
+        </nav>
+    </header>
+
+    <main class="site-main">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="site-footer">
+        <p class="footer-brand">THE ALANKAARA</p>
+        <p>The Art of Indian Elegance</p>
+        <p>Every thread tells a beautiful story.</p>
+    </footer>
+
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

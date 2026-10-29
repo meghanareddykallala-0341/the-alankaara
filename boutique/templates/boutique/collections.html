@@ -1,0 +1,261 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Collections | THE ALANKAARA</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <style>
+        .collections-page {
+            width: min(1200px, 92%);
+            margin: 45px auto 65px;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .collections-hero {
+            padding: 45px 20px;
+            margin-bottom: 35px;
+            text-align: center;
+            background: linear-gradient(135deg, #fff4f1, #f5e3e7);
+            border-radius: 12px;
+        }
+
+        .section-label {
+            color: #a34c69;
+            font-size: 11px;
+            letter-spacing: 3px;
+        }
+
+        .collections-hero h1 {
+            margin: 12px 0;
+            color: #4d1b2d;
+            font: 500 clamp(36px, 5vw, 54px) 'Cormorant Garamond', Georgia, serif;
+        }
+
+        .collections-hero p {
+            color: #76545f;
+            font-size: 13px;
+            line-height: 1.9;
+        }
+
+        .collection-list {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 22px;
+        }
+
+        /* Individual collection colours */
+        .collection-tile {
+            --tile-bg: #fffaf7;
+            --tile-text: #4d1b2d;
+            --tile-accent: #a34c69;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 205px;
+            padding: 26px;
+            background: var(--tile-bg);
+            border: 1px solid rgba(77, 27, 45, 0.12);
+            border-radius: 10px;
+            color: var(--tile-text);
+            text-decoration: none;
+            transition: transform .25s, box-shadow .25s;
+        }
+
+        .collection-tile:nth-child(6n + 1) {
+            --tile-bg: #f2dde3;
+            --tile-text: #5c2037;
+            --tile-accent: #8e3454;
+        }
+
+        .collection-tile:nth-child(6n + 2) {
+            --tile-bg: #e8d8f0;
+            --tile-text: #48285d;
+            --tile-accent: #774b91;
+        }
+
+        .collection-tile:nth-child(6n + 3) {
+            --tile-bg: #f5e5b8;
+            --tile-text: #68461a;
+            --tile-accent: #91651d;
+        }
+
+        .collection-tile:nth-child(6n + 4) {
+            --tile-bg: #d8e8d5;
+            --tile-text: #285237;
+            --tile-accent: #3d754e;
+        }
+
+        .collection-tile:nth-child(6n + 5) {
+            --tile-bg: #f3d4c5;
+            --tile-text: #713c2c;
+            --tile-accent: #a65d46;
+        }
+
+        .collection-tile:nth-child(6n + 6) {
+            --tile-bg: #d6e4f3;
+            --tile-text: #24456a;
+            --tile-accent: #426e9e;
+        }
+
+        .collection-tile:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(77, 27, 45, .15);
+        }
+
+        .collection-number {
+            color: var(--tile-accent);
+            font-size: 11px;
+            letter-spacing: 2px;
+        }
+
+        .collection-tile h2 {
+            margin: 25px 0 8px;
+            color: var(--tile-text);
+            font: 500 30px 'Cormorant Garamond', Georgia, serif;
+        }
+
+        .collection-tile p {
+            color: var(--tile-text);
+            opacity: .78;
+            font-size: 12px;
+        }
+
+        .collection-arrow {
+            display: inline-block;
+            margin-top: 18px;
+            color: var(--tile-accent);
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .collections-empty {
+            padding: 35px;
+            background: #fff4f1;
+            border-radius: 10px;
+            text-align: center;
+            color: #76545f;
+        }
+
+        .collections-back {
+            margin-top: 35px;
+            text-align: center;
+        }
+
+        .collections-back a {
+            display: inline-block;
+            padding: 13px 25px;
+            background: #762640;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 13px;
+        }
+
+        .collections-back a:hover {
+            background: #4d1b2d;
+        }
+
+        .collections-footer {
+            padding: 25px 15px;
+            background: #4d1b2d;
+            color: white;
+            text-align: center;
+            font: 12px 'Poppins', sans-serif;
+        }
+
+        .collections-footer p {
+            margin: 5px 0;
+        }
+
+        .footer-copy {
+            opacity: .75;
+            font-size: 11px;
+        }
+
+        @media (max-width: 800px) {
+            .collection-list {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 520px) {
+            .collections-page {
+                margin-top: 25px;
+            }
+
+            .collections-hero {
+                padding: 32px 15px;
+            }
+
+            .collection-list {
+                grid-template-columns: 1fr;
+            }
+
+            .collection-tile {
+                min-height: 170px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+{% include "boutique/partials/navbar.html" %}
+
+<main class="collections-page">
+
+    <section class="collections-hero">
+        <p class="section-label">EXPLORE OUR WORLD</p>
+        <h1>Discover Our Collections</h1>
+        <p>
+            From timeless Indian traditions to contemporary elegance,<br>
+            find something beautiful for every mood and occasion.
+        </p>
+    </section>
+
+    {% if collections %}
+        <section class="collection-list">
+            {% for title, slug in collections %}
+                <a href="{% url 'collection' slug %}" class="collection-tile">
+                    <span class="collection-number">
+                        COLLECTION {{ forloop.counter|stringformat:"02d" }}
+                    </span>
+
+                    <div>
+                        <h2>{{ title }}</h2>
+                        <p>Explore pieces selected for you.</p>
+                        <span class="collection-arrow">Discover collection →</span>
+                    </div>
+                </a>
+            {% endfor %}
+        </section>
+    {% else %}
+        <section class="collections-empty">
+            <h2>No collections available yet</h2>
+            <p>Please check back soon.</p>
+        </section>
+    {% endif %}
+
+    <div class="collections-back">
+        <a href="{% url 'home' %}">Back to Home</a>
+    </div>
+
+</main>
+
+<footer class="collections-footer">
+    <p>THE ALANKAARA — The Art of Indian Elegance</p>
+    <p class="footer-copy">
+        &copy; {% now "Y" %} THE ALANKAARA. All rights reserved.
+    </p>
+</footer>
+
+</body>
+</html>

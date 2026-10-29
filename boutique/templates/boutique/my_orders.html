@@ -1,0 +1,186 @@
+{% extends "boutique/base.html" %}
+
+{% block title %}My Orders | THE ALANKAARA{% endblock %}
+
+{% block extra_css %}
+<style>
+.my-orders-page {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 60px 24px;
+    color: #63233b;
+}
+
+.my-orders-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.my-orders-header h1 {
+    font-family: "Cormorant Garamond", Georgia, serif;
+    font-size: 42px;
+    margin: 8px 0;
+}
+
+.eyebrow {
+    letter-spacing: 3px;
+    font-size: 12px;
+    color: #a34c69;
+}
+
+.my-orders-intro {
+    color: #806673;
+    font-size: 14px;
+}
+
+.order-card {
+    border: 1px solid #ead8de;
+    border-radius: 14px;
+    padding: 24px;
+    margin-bottom: 24px;
+    background: #fff;
+}
+
+.order-card-header,
+.order-item,
+.order-card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+}
+
+.order-card-header {
+    padding-bottom: 18px;
+    border-bottom: 1px solid #f0e5e8;
+}
+
+.order-card-header h2 {
+    margin: 0 0 6px;
+    font-family: "Cormorant Garamond", Georgia, serif;
+}
+
+.order-card-header p,
+.order-item p {
+    margin: 4px 0;
+    color: #806673;
+    font-size: 13px;
+}
+
+.order-status {
+    background: #f8e9ef;
+    color: #762640;
+    border-radius: 20px;
+    padding: 8px 14px;
+    font-size: 12px;
+}
+
+.order-items {
+    padding: 4px 0;
+}
+
+.order-item {
+    padding: 16px 0;
+    border-bottom: 1px solid #f5ebee;
+}
+
+.order-item strong {
+    overflow-wrap: anywhere;
+}
+
+.order-card-footer {
+    padding-top: 18px;
+    flex-wrap: wrap;
+}
+
+.order-card-footer div {
+    display: grid;
+    gap: 6px;
+}
+
+.order-card-footer span {
+    color: #806673;
+    font-size: 12px;
+}
+
+.empty-orders {
+    text-align: center;
+    padding: 48px 20px;
+    border: 1px solid #ead8de;
+    border-radius: 14px;
+    background: #fff;
+}
+
+.empty-orders h2 {
+    font-family: "Cormorant Garamond", Georgia, serif;
+    font-size: 30px;
+}
+
+.empty-orders p {
+    color: #806673;
+    line-height: 1.7;
+}
+
+.empty-orders a {
+    display: inline-block;
+    margin-top: 16px;
+    padding: 12px 22px;
+    border-radius: 6px;
+    background: #762640;
+    color: white;
+    text-decoration: none;
+}
+
+.empty-orders a:hover {
+    background: #4d1b2d;
+}
+
+@media (max-width: 600px) {
+    .my-orders-page {
+        padding: 36px 16px;
+    }
+
+    .my-orders-header h1 {
+        font-size: 34px;
+    }
+
+    .order-card {
+        padding: 16px;
+    }
+
+    .order-card-header,
+    .order-item {
+        align-items: flex-start;
+    }
+
+    .order-card-footer {
+        display: grid;
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="my-orders-page">
+    <header class="my-orders-header">
+        <p class="eyebrow">YOUR ALANKAARA ACCOUNT</p>
+        <h1>My Orders</h1>
+        <p class="my-orders-intro">
+            View your purchases and track their status.
+        </p>
+    </header>
+
+    {% if orders %}
+        <div class="orders-list">
+            {% for order in orders %}
+                <article class="order-card">
+                    <div class="order-card-header">
+                        <div>
+                            <h2>Order #{{ order.id }}</h2>
+                            <p>{{ order.created_at|date:"d M Y, h:i A" }}</p>
+                        </div>
+
+                        <span class="order-status">
+                            {{ order.get_status_display }}
+                       

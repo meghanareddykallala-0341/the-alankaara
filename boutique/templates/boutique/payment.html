@@ -1,0 +1,634 @@
+
+{% extends "boutique/base.html" %}
+
+{% block title %}Secure Checkout | THE ALANKAARA{% endblock %}
+
+{% block extra_css %}
+<style>
+/* ===== CHECKOUT PAGE: ISOLATED LAYOUT FIX ===== */
+body:has(.payment-page) main.site-main {
+    display: block !important;
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.payment-page,
+.payment-page * {
+    box-sizing: border-box;
+}
+
+.payment-page {
+    --wine: #702940;
+    --text: #482635;
+    --muted: #8e777f;
+    --border: #eadbd8;
+
+    display: block !important;
+    width: 100% !important;
+    max-width: none !important;
+    min-height: 75vh;
+    margin: 0 !important;
+    padding: 45px 5% 60px !important;
+    background: #f8f3ed;
+    color: var(--text);
+    font-family: "Poppins", sans-serif;
+}
+
+/* IMPORTANT: Do not let the old global grid affect this container */
+.payment-page .payment-container {
+    display: block !important;
+    width: 100% !important;
+    max-width: 1200px !important;
+    margin: 0 auto !important;
+    padding: 0 !important;
+}
+
+/* ===== PAGE HEADING ===== */
+.payment-page .payment-heading {
+    display: block;
+    width: 100%;
+    margin: 0 0 35px;
+    text-align: center;
+}
+
+.payment-page .payment-eyebrow {
+    margin: 0 0 10px;
+    color: #9b6c79;
+    font-size: 10px;
+    letter-spacing: 4px;
+}
+
+.payment-page .payment-heading h1 {
+    margin: 0;
+    color: var(--wine);
+    font-family: "Cormorant Garamond", Georgia, serif;
+    font-size: clamp(42px, 5vw, 58px);
+    font-weight: 500;
+    line-height: 1.1;
+}
+
+.payment-page .payment-heading > p:not(.payment-eyebrow) {
+    margin: 12px 0 0;
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.payment-page .checkout-progress {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 25px;
+    color: #a18d93;
+    font-size: 10px;
+}
+
+.payment-page .progress-done,
+.payment-page .progress-current {
+    color: var(--wine);
+    font-weight: 600;
+}
+
+.payment-page .progress-line {
+    display: inline-block;
+    width: 35px;
+    height: 1px;
+    background: #d9c5cb;
+}
+
+/* ===== TWO-COLUMN CHECKOUT ===== */
+.payment-page .checkout-layout {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+    align-items: start;
+    gap: 28px;
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: 0;
+}
+
+.payment-page .checkout-left,
+.payment-page .checkout-right {
+    display: block;
+    float: none !important;
+    width: 100% !important;
+    min-width: 0;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* ===== ORDER AND PAYMENT CARDS ===== */
+.payment-page .payment-panel,
+.payment-page .payment-form {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    max-width: none;
+    margin: 0;
+    padding: 28px;
+    background: #fffdfa;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    box-shadow: 0 5px 22px rgba(73, 37, 49, 0.05);
+}
+
+.payment-page .panel-heading {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 0 0 22px;
+}
+
+.payment-page .panel-number {
+    display: grid;
+    place-items: center;
+    flex: 0 0 38px;
+    width: 38px;
+    height: 38px;
+    background: #f4e8e9;
+    color: var(--wine);
+    font-size: 11px;
+}
+
+.payment-page .panel-heading h2 {
+    margin: 0;
+    color: var(--wine);
+    font-family: "Cormorant Garamond", Georgia, serif;
+    font-size: 28px;
+    font-weight: 600;
+    line-height: 1.2;
+}
+
+.payment-page .panel-heading p {
+    margin: 4px 0 0;
+    color: var(--muted);
+    font-size: 10px;
+}
+
+.payment-page .order-number {
+    display: inline-block;
+    margin: 0 0 10px;
+    padding: 7px 10px;
+    background: #f7edef;
+    color: #805364;
+    font-size: 10px;
+}
+
+.payment-page .payment-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 15px;
+    width: 100%;
+    margin: 0;
+    padding: 16px 0;
+    border-bottom: 1px solid #eee5df;
+}
+
+.payment-page .item-details {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.payment-page .item-details strong {
+    color: #542b3a;
+    font-size: 12px;
+    font-weight: 500;
+    overflow-wrap: anywhere;
+}
+
+.payment-page .item-details p {
+    margin: 6px 0 0;
+    color: #99858b;
+    font-size: 10px;
+    line-height: 1.7;
+}
+
+.payment-page .item-price {
+    flex: 0 0 auto;
+    color: var(--wine);
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+.payment-page .empty-order {
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.payment-page .payment-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-top: 20px;
+    padding-top: 18px;
+    border-top: 1px solid #dfcbd0;
+}
+
+.payment-page .payment-total span {
+    color: #755964;
+    font-size: 12px;
+}
+
+.payment-page .payment-total strong {
+    color: var(--wine);
+    font-family: "Cormorant Garamond", Georgia, serif;
+    font-size: 30px;
+}
+
+/* ===== DEMONSTRATION NOTICE ===== */
+.payment-page .demo-notice {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    width: 100%;
+    margin-top: 16px;
+    padding: 16px;
+    background: #f0e9dc;
+    border-left: 3px solid #ad8953;
+}
+
+.payment-page .notice-symbol {
+    display: grid;
+    place-items: center;
+    flex: 0 0 22px;
+    width: 22px;
+    height: 22px;
+    border: 1px solid #ad8953;
+    border-radius: 50%;
+    color: #806d54;
+    font-size: 12px;
+}
+
+.payment-page .demo-notice strong {
+    color: #665238;
+    font-size: 11px;
+}
+
+.payment-page .demo-notice p {
+    margin: 6px 0 0;
+    color: #806d54;
+    font-size: 10px;
+    line-height: 1.8;
+}
+
+/* ===== PAYMENT METHODS ===== */
+.payment-page .payment-methods {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+}
+
+.payment-page .payment-option {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    min-height: 72px;
+    margin: 0;
+    padding: 13px;
+    background: #fffdfa;
+    border: 1px solid #e8dcd7;
+    border-radius: 2px;
+    cursor: pointer;
+}
+
+.payment-page .payment-option:hover {
+    background: #fcf6f5;
+    border-color: #c8a5ae;
+}
+
+.payment-page .payment-option:has(input:checked) {
+    background: #f7ebee;
+    border-color: var(--wine);
+    box-shadow: inset 3px 0 var(--wine);
+}
+
+.payment-page .payment-option input[type="radio"] {
+    display: block;
+    flex: 0 0 16px;
+    width: 16px;
+    height: 16px;
+    margin: 0;
+    accent-color: var(--wine);
+}
+
+.payment-page .method-icon {
+    display: grid;
+    place-items: center;
+    flex: 0 0 36px;
+    width: 36px;
+    height: 36px;
+    background: #f4e9e8;
+    color: var(--wine);
+    font-size: 14px;
+}
+
+.payment-page .method-details {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    gap: 5px;
+    min-width: 0;
+}
+
+.payment-page .method-details strong {
+    color: #542b3a;
+    font-size: 11px;
+    font-weight: 500;
+}
+
+.payment-page .method-details small {
+    color: #99858b;
+    font-size: 10px;
+    line-height: 1.5;
+}
+
+.payment-page .payment-tag {
+    flex: 0 0 auto;
+    padding: 5px 7px;
+    background: #f0e0e5;
+    color: var(--wine);
+    font-size: 8px;
+}
+
+/* ===== BUTTONS AND FOOTER ===== */
+.payment-page .checkout-secure-note {
+    margin-top: 18px;
+    color: #99868c;
+    text-align: center;
+    font-size: 10px;
+    line-height: 1.7;
+}
+
+.payment-page .payment-button {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    min-height: 52px;
+    margin: 16px 0 0;
+    padding: 15px 18px;
+    background: var(--wine);
+    border: 1px solid var(--wine);
+    border-radius: 2px;
+    color: #fff;
+    font-family: "Poppins", sans-serif;
+    font-size: 12px;
+    text-align: left;
+    cursor: pointer;
+}
+
+.payment-page .payment-button:hover {
+    background: #542033;
+}
+
+.payment-page .back-to-cart {
+    display: block;
+    margin-top: 18px;
+    color: #805364;
+    text-align: center;
+    font-size: 11px;
+    text-decoration: none;
+}
+
+.payment-page .back-to-cart:hover {
+    text-decoration: underline;
+}
+
+.payment-page .payment-error {
+    margin: 0 0 18px;
+    padding: 12px;
+    background: #fff0f0;
+    border: 1px solid #e8c7ca;
+    color: #9b3044;
+    font-size: 12px;
+}
+
+.payment-page .payment-footer {
+    width: 100%;
+    margin-top: 35px;
+    color: #9a828a;
+    text-align: center;
+    font-size: 10px;
+}
+
+.payment-page .payment-footer span {
+    font-family: "Cormorant Garamond", Georgia, serif;
+    font-size: 17px;
+    letter-spacing: 2px;
+}
+
+.payment-page .payment-footer p {
+    margin: 5px 0 0;
+}
+
+/* ===== TABLET AND MOBILE ===== */
+@media (max-width: 760px) {
+    .payment-page {
+        padding: 30px 16px 40px !important;
+    }
+
+    .payment-page .checkout-layout {
+        grid-template-columns: minmax(0, 1fr) !important;
+        gap: 20px;
+    }
+
+    .payment-page .payment-heading h1 {
+        font-size: 42px;
+    }
+
+    .payment-page .payment-panel,
+    .payment-page .payment-form {
+        padding: 20px 16px;
+    }
+}
+
+@media (max-width: 380px) {
+    .payment-page .checkout-progress {
+        gap: 7px;
+        font-size: 9px;
+    }
+
+    .payment-page .progress-line {
+        width: 15px;
+    }
+
+    .payment-page .payment-option {
+        gap: 7px;
+        padding: 10px 8px;
+    }
+
+    .payment-page .method-icon {
+        flex-basis: 28px;
+        width: 28px;
+        height: 28px;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="payment-page">
+    <div class="payment-container">
+
+        <header class="payment-heading">
+            <p class="payment-eyebrow">THE ALANKAARA</p>
+            <h1>Checkout</h1>
+            <p>Something beautiful is almost yours.</p>
+
+            <div class="checkout-progress">
+                <span class="progress-done">01 &nbsp; Order</span>
+                <span class="progress-line"></span>
+                <span class="progress-current">02 &nbsp; Payment</span>
+                <span class="progress-line"></span>
+                <span>03 &nbsp; Confirmation</span>
+            </div>
+        </header>
+
+        {% if error %}
+            <p class="payment-error">{{ error }}</p>
+        {% endif %}
+
+        <div class="checkout-layout">
+            <div class="checkout-left">
+
+                <div class="payment-panel">
+                    <div class="panel-heading">
+                        <span class="panel-number">01</span>
+                        <div>
+                            <h2>Your Order</h2>
+                            <p>Review your selected pieces</p>
+                        </div>
+                    </div>
+
+                    <p class="order-number">ORDER #{{ order.id }}</p>
+
+                    <div class="order-items">
+                        {% for item in items %}
+                            <div class="payment-item">
+                                <div class="item-details">
+                                    <strong>{{ item.product.name }}</strong>
+                                    <p>
+                                        Size: {{ item.size|default:"Standard" }}
+                                        &nbsp;·&nbsp;
+                                        Qty: {{ item.quantity }}
+                                    </p>
+                                </div>
+                                <span class="item-price">
+                                    ₹{{ item.subtotal|default:item.price }}
+                                </span>
+                            </div>
+                        {% empty %}
+                            <p class="empty-order">
+                                No items were found for this order.
+                            </p>
+                        {% endfor %}
+                    </div>
+
+                    <div class="payment-total">
+                        <span>Total payable</span>
+                        <strong>₹{{ order.total_amount }}</strong>
+                    </div>
+                </div>
+
+                <div class="demo-notice">
+                    <span class="notice-symbol">i</span>
+                    <div>
+                        <strong>College project demonstration</strong>
+                        <p>
+                            This checkout is a demo. No real payment is processed.
+                            Never enter actual card, UPI, or banking details.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="checkout-right">
+                <form method="post" class="payment-form">
+                    {% csrf_token %}
+
+                    <div class="panel-heading">
+                        <span class="panel-number">02</span>
+                        <div>
+                            <h2>Payment Method</h2>
+                            <p>Choose how you would like to pay</p>
+                        </div>
+                    </div>
+
+                    <div class="payment-methods">
+                        <label class="payment-option">
+                            <input type="radio" name="payment_method" value="upi" required>
+                            <span class="method-icon">U</span>
+                            <span class="method-details">
+                                <strong>UPI</strong>
+                                <small>Simulated UPI payment</small>
+                            </span>
+                            <span class="payment-tag">DEMO</span>
+                        </label>
+
+                        <label class="payment-option">
+                            <input type="radio" name="payment_method" value="card">
+                            <span class="method-icon">▤</span>
+                            <span class="method-details">
+                                <strong>Credit / Debit Card</strong>
+                                <small>Simulated card payment</small>
+                            </span>
+                            <span class="payment-tag">DEMO</span>
+                        </label>
+
+                        <label class="payment-option">
+                            <input type="radio" name="payment_method" value="netbanking">
+                            <span class="method-icon">⌂</span>
+                            <span class="method-details">
+                                <strong>Net Banking</strong>
+                                <small>Simulated banking payment</small>
+                            </span>
+                            <span class="payment-tag">DEMO</span>
+                        </label>
+
+                        <label class="payment-option">
+                            <input type="radio" name="payment_method" value="cod">
+                            <span class="method-icon">₹</span>
+                            <span class="method-details">
+                                <strong>Cash on Delivery</strong>
+                                <small>Pay when your order arrives</small>
+                            </span>
+                        </label>
+                    </div>
+
+                    <div class="checkout-secure-note">
+                        Demo checkout · No real payment details required
+                    </div>
+
+                    <button type="submit" class="payment-button">
+                        <span>Confirm Payment Choice</span>
+                        <span aria-hidden="true">→</span>
+                    </button>
+
+                    <a href="{% url 'cart' %}" class="back-to-cart">
+                        ← Return to cart
+                    </a>
+                </form>
+            </div>
+        </div>
+
+        <footer class="payment-footer">
+            <span>THE ALANKAARA</span>
+            <p>The Art of Indian Elegance</p>
+        </footer>
+
+    </div>
+</section>
+{% endblock %}

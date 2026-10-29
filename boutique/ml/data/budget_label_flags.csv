@@ -1,0 +1,9 @@
+scenario_id,product_name,category,price_inr,user_occasion,user_budget_max_inr,label
+SCN-0006,Curated example 37: Everyday cotton kurti,Kurti,2000,Office,800,recommended
+SCN-0016,Curated example 18: Embroidered lehenga,Lehenga,5125,Festive,5000,recommended
+SCN-0116,Curated example 33: Embroidered lehenga,Lehenga,10250,Wedding,10000,recommended
+SCN-0157,Curated example 33: Embroidered lehenga,Lehenga,10250,Wedding,10000,recommended
+SCN-0232,Curated example 34: Light festive lehenga,Lehenga,10250,Party,10000,recommended
+SCN-0247,Curated example 18: Embroidered lehenga,Lehenga,5125,Party,1500,recommended
+SCN-0279,Curated example 3: Embroidered lehenga,Lehenga,10250,Party,10000,recommended
+SCN-0292,Curated example 3: Embroidered lehenga,Lehenga,10250,Wedding,10000,recommended

@@ -1,0 +1,48 @@
+scenario_id,product_name,category,price_inr,user_occasion,user_budget_max_inr,label
+SCN-0003,Curated example 7: Everyday cotton kurti,Kurti,399,Party,1500,recommended
+SCN-0011,Curated example 20: Flowy anarkali,Anarkali,3950,Office,10000,recommended
+SCN-0019,Curated example 20: Flowy anarkali,Anarkali,3950,Casual,10000,recommended
+SCN-0025,Curated example 41: Embroidered dupatta,Dupatta,1375,Office,5000,recommended
+SCN-0026,Curated example 20: Flowy anarkali,Anarkali,3950,Travel,5000,recommended
+SCN-0028,Curated example 11: Embroidered dupatta,Dupatta,250,Office,800,recommended
+SCN-0050,Royal Pink Silk Saree,Saree,4500,Travel,10000,recommended
+SCN-0057,Curated example 29: Jhumka earrings,Jewellery,199,Travel,800,recommended
+SCN-0064,Curated example 39: Printed coord set,Coord set,3600,Festive,10000,recommended
+SCN-0065,Curated example 36: Embellished anarkali,Anarkali,900,Casual,1500,recommended
+SCN-0066,Curated example 23: Straight office kurti,Kurti,2000,Wedding,15000,recommended
+SCN-0069,Curated example 26: Embroidered dupatta,Dupatta,687,Party,1500,recommended
+SCN-0080,Curated example 40: Indo-western festive set,Indo-western,1500,Casual,10000,recommended
+SCN-0083,Curated example 10: Indo-western festive set,Indo-western,1500,Travel,15000,recommended
+SCN-0085,Curated example 11: Embroidered dupatta,Dupatta,250,Office,800,recommended
+SCN-0088,Curated example 38: Straight office kurti,Kurti,399,Wedding,5000,recommended
+SCN-0089,Curated example 41: Embroidered dupatta,Dupatta,1375,Travel,10000,recommended
+SCN-0090,Curated example 26: Embroidered dupatta,Dupatta,687,Casual,15000,recommended
+SCN-0094,Curated example 14: Jhumka earrings,Jewellery,674,Travel,2500,recommended
+SCN-0111,Curated example 4: Light festive lehenga,Lehenga,5125,Office,15000,recommended
+SCN-0119,Curated example 26: Embroidered dupatta,Dupatta,687,Casual,1500,recommended
+SCN-0129,Curated example 41: Embroidered dupatta,Dupatta,1375,Office,15000,recommended
+SCN-0133,Curated example 45: Festive blouse,Blouse,350,Casual,1500,recommended
+SCN-0139,Curated example 8: Straight office kurti,Kurti,399,Wedding,5000,recommended
+SCN-0153,Curated example 15: Festive blouse,Blouse,350,Travel,5000,recommended
+SCN-0161,Curated example 41: Embroidered dupatta,Dupatta,1375,Travel,15000,recommended
+SCN-0169,Curated example 4: Light festive lehenga,Lehenga,5125,Travel,15000,recommended
+SCN-0178,Curated example 23: Straight office kurti,Kurti,2000,Wedding,15000,recommended
+SCN-0186,Curated example 40: Indo-western festive set,Indo-western,1500,College,15000,recommended
+SCN-0191,Curated example 21: Embellished anarkali,Anarkali,900,Office,10000,recommended
+SCN-0192,Curated example 26: Embroidered dupatta,Dupatta,687,College,2500,recommended
+SCN-0193,Curated example 26: Embroidered dupatta,Dupatta,687,College,1500,recommended
+SCN-0194,Curated example 19: Light festive lehenga,Lehenga,14400,College,15000,recommended
+SCN-0199,Curated example 11: Embroidered dupatta,Dupatta,250,Party,15000,recommended
+SCN-0201,Curated example 16: Silk saree,Saree,3300,Travel,10000,recommended
+SCN-0207,Curated example 22: Everyday cotton kurti,Kurti,724,Wedding,10000,recommended
+SCN-0208,Curated example 20: Flowy anarkali,Anarkali,3950,College,5000,recommended
+SCN-0216,Mustard Everyday Kurti,Kurti,1299,Party,5000,recommended
+SCN-0221,Curated example 10: Indo-western festive set,Indo-western,1500,Office,2500,recommended
+SCN-0250,Curated example 26: Embroidered dupatta,Dupatta,687,Party,2500,recommended
+SCN-0255,Curated example 40: Indo-western festive set,Indo-western,1500,Travel,15000,recommended
+SCN-0273,Curated example 25: Indo-western festive set,Indo-western,5250,College,10000,recommended
+SCN-0281,Curated example 36: Embellished anarkali,Anarkali,900,Casual,2500,recommended
+SCN-0283,Curated example 38: Straight office kurti,Kurti,399,Party,2500,recommended
+SCN-0293,Curated example 21: Embellished anarkali,Anarkali,900,Casual,1500,recommended
+SCN-0295,Curated example 40: Indo-western festive set,Indo-western,1500,Office,10000,recommended
+SCN-0299,Curated example 5: Flowy anarkali,Anarkali,1975,College,15000,recommended

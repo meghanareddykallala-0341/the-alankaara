@@ -1,0 +1,391 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmed | THE ALANKAARA</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap"
+          rel="stylesheet">
+
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            background: #fffaf7;
+            color: #4d1b2d;
+            font-family: 'Poppins', Arial, sans-serif;
+        }
+
+        .confirmation-page {
+            max-width: 900px;
+            margin: 45px auto 70px;
+            padding: 0 20px;
+        }
+
+        .confirmation-card {
+            background: white;
+            border: 1px solid #ead6d9;
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 10px 35px rgba(77, 27, 45, 0.06);
+        }
+
+        .success-section {
+            text-align: center;
+            padding: 42px 24px 32px;
+            background: linear-gradient(180deg, #fff4f1, #ffffff);
+        }
+
+        .confirmation-icon {
+            display: grid;
+            place-items: center;
+            width: 72px;
+            height: 72px;
+            margin: 0 auto 20px;
+            border: 1px solid #d8b9c2;
+            border-radius: 50%;
+            background: white;
+            color: #762640;
+            font-size: 34px;
+        }
+
+        .eyebrow {
+            color: #a34c69;
+            font-size: 11px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        .success-section h1 {
+            margin: 12px 0;
+            color: #762640;
+            font: 500 clamp(35px, 5vw, 50px) 'Cormorant Garamond', Georgia, serif;
+        }
+
+        .success-section p {
+            margin: 8px 0;
+            color: #806572;
+            font-size: 13px;
+            line-height: 1.8;
+        }
+
+        .order-number {
+            display: inline-block;
+            margin-top: 18px;
+            padding: 12px 22px;
+            border: 1px solid #ead6d9;
+            border-radius: 6px;
+            background: white;
+            color: #762640;
+            font-size: 13px;
+        }
+
+        .order-details { padding: 28px; }
+
+        .section-heading {
+            margin: 0 0 18px;
+            color: #762640;
+            font: 500 29px 'Cormorant Garamond', Georgia, serif;
+        }
+
+        .order-status,
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 15px;
+            padding: 14px 0;
+            border-bottom: 1px solid #f0e2e3;
+            font-size: 12px;
+        }
+
+        .status-label,
+        .detail-label { color: #806572; }
+
+        .status-value {
+            color: #762640;
+            font-weight: 600;
+            text-align: right;
+        }
+
+        .items-heading { margin-top: 30px; }
+
+        .purchased-item {
+            display: grid;
+            grid-template-columns: 82px minmax(0, 1fr) auto;
+            align-items: center;
+            gap: 16px;
+            padding: 16px 0;
+            border-bottom: 1px solid #f0e2e3;
+        }
+
+        .item-image {
+            width: 82px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 7px;
+            background: #fff4f1;
+        }
+
+        .item-placeholder {
+            display: grid;
+            place-items: center;
+            color: #a34c69;
+            font-size: 10px;
+            text-align: center;
+        }
+
+        .item-name {
+            margin: 0 0 7px;
+            color: #4d1b2d;
+            font: 500 22px 'Cormorant Garamond', Georgia, serif;
+        }
+
+        .item-description {
+            margin: 4px 0;
+            color: #806572;
+            font-size: 11px;
+        }
+
+        .item-price {
+            color: #762640;
+            font-size: 12px;
+            font-weight: 500;
+            text-align: right;
+            white-space: nowrap;
+        }
+
+        .order-total {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #ead6d9;
+            color: #762640;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .order-total span:first-child { font-size: 13px; }
+
+        .delivery-section { margin-top: 32px; }
+
+        .delivery-address {
+            padding: 18px;
+            border: 1px solid #ead6d9;
+            border-radius: 8px;
+            background: #fffaf7;
+            color: #76545f;
+            font-size: 12px;
+            line-height: 1.9;
+            overflow-wrap: anywhere;
+        }
+
+        .delivery-address strong { color: #4d1b2d; }
+
+        .thank-you-note {
+            margin: 26px 0 0;
+            color: #806572;
+            font-size: 12px;
+            line-height: 1.8;
+            text-align: center;
+        }
+
+        .confirmation-actions {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            padding: 0 25px 35px;
+        }
+
+        .shop-button,
+        .collections-button {
+            display: inline-block;
+            padding: 13px 25px;
+            border: 1px solid #762640;
+            border-radius: 5px;
+            font-size: 12px;
+            text-decoration: none;
+            transition: background 0.2s;
+        }
+
+        .shop-button {
+            background: #762640;
+            color: white;
+        }
+
+        .shop-button:hover { background: #4d1b2d; }
+
+        .collections-button {
+            background: white;
+            color: #762640;
+            border-color: #d8b9c2;
+        }
+
+        .collections-button:hover { background: #fff4f1; }
+
+        .confirmation-footer {
+            padding: 24px 20px;
+            background: #4d1b2d;
+            color: #f8e9ed;
+            text-align: center;
+            font-size: 11px;
+            letter-spacing: 0.5px;
+        }
+
+        @media (max-width: 520px) {
+            .confirmation-page {
+                margin: 25px auto 40px;
+                padding: 0 12px;
+            }
+
+            .success-section { padding: 32px 16px 26px; }
+            .order-details { padding: 20px 16px; }
+
+            .purchased-item {
+                grid-template-columns: 65px minmax(0, 1fr);
+                gap: 12px;
+            }
+
+            .item-image {
+                width: 65px;
+                height: 82px;
+            }
+
+            .item-price {
+                grid-column: 2;
+                text-align: left;
+            }
+
+            .confirmation-actions { padding: 0 16px 26px; }
+
+            .shop-button,
+            .collections-button {
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+
+<!-- HEADER -->
+{% include "boutique/partials/navbar.html" %}
+
+
+<main class="confirmation-page">
+    <section class="confirmation-card">
+
+        <div class="success-section">
+            <div class="confirmation-icon" aria-hidden="true">✓</div>
+
+            <span class="eyebrow">A beautiful choice, beautifully made</span>
+
+            <h1>Thank You for Your Order!</h1>
+
+            <p>Your order has been recorded successfully.</p>
+            <p>We're delighted that you chose THE ALANKAARA.</p>
+
+            <div class="order-number">
+                <strong>Order Number: #{{ order.id }}</strong>
+            </div>
+        </div>
+
+        <div class="order-details">
+            <h2 class="section-heading">Order Summary</h2>
+
+            <div class="order-status">
+                <span class="status-label">Order Status</span>
+                <span class="status-value">{{ order.get_status_display }}</span>
+            </div>
+
+            <h2 class="section-heading items-heading">Items Purchased</h2>
+
+            {% for item in order.orderitem_set.all %}
+                <article class="purchased-item">
+                    {% if item.product.image %}
+                        <img src="{{ item.product.image.url }}"
+                             alt="{{ item.product.name }}"
+                             class="item-image">
+                    {% else %}
+                        <div class="item-image item-placeholder">
+                            THE ALANKAARA
+                        </div>
+                    {% endif %}
+
+                    <div>
+                        <h3 class="item-name">{{ item.product.name }}</h3>
+                        <p class="item-description">Quantity: {{ item.quantity }}</p>
+                        <p class="item-description">
+                            Unit price: ₹{{ item.price|floatformat:2 }}
+                        </p>
+                    </div>
+
+                    <div class="item-price">
+                        ₹{{ item.price|floatformat:2 }}
+                        × {{ item.quantity }}
+                    </div>
+                </article>
+            {% empty %}
+                <p class="item-description">
+                    Item details are not available for this order.
+                </p>
+            {% endfor %}
+
+            <div class="order-total">
+                <span>Total Amount</span>
+                <span>₹{{ order.total_amount|floatformat:2 }}</span>
+            </div>
+
+            <section class="delivery-section">
+                <h2 class="section-heading">Delivery Details</h2>
+
+                <div class="delivery-address">
+                    <strong>{{ order.customer_name }}</strong><br>
+                    {{ order.address }}<br>
+                    {{ order.city }}, {{ order.state }} - {{ order.pincode }}<br>
+                    Phone: {{ order.phone }}
+
+                    {% if order.email %}
+                        <br>Email: {{ order.email }}
+                    {% endif %}
+                </div>
+            </section>
+
+            <p class="thank-you-note">
+                Your order details have been recorded.
+                Thank you for choosing THE ALANKAARA.
+                We hope you love your selection.
+            </p>
+        </div>
+
+        <div class="confirmation-actions">
+            <a href="{% url 'anarkalis' %}" class="shop-button">
+                Continue Shopping →
+            </a>
+
+            <a href="{% url 'all_collections' %}" class="collections-button">
+                Explore Collections
+            </a>
+        </div>
+
+    </section>
+</main>
+
+<footer class="confirmation-footer">
+    THE ALANKAARA · Crafted with love, inspired by tradition.
+</footer>
+
+</body>
+</html>

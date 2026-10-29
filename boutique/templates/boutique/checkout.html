@@ -1,0 +1,631 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout | THE ALANKAARA</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: #fffaf7;
+            color: #4d1b2d;
+            font-family: 'Poppins', Arial, sans-serif;
+        }
+
+        .checkout-page {
+            max-width: 1150px;
+            margin: 45px auto 70px;
+            padding: 0 22px;
+        }
+
+        .checkout-heading {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .eyebrow {
+            color: #a34c69;
+            font-size: 11px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        .checkout-heading h1 {
+            margin: 8px 0;
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            color: #762640;
+            font-size: clamp(38px, 5vw, 54px);
+            font-weight: 500;
+        }
+
+        .checkout-heading p {
+            color: #8b6873;
+            font-size: 14px;
+        }
+
+        .checkout-steps {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            margin: 25px 0 35px;
+            font-size: 12px;
+            color: #8b6873;
+        }
+
+        .step {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+        }
+
+        .step-number {
+            display: grid;
+            place-items: center;
+            width: 27px;
+            height: 27px;
+            border: 1px solid #d8b9c2;
+            border-radius: 50%;
+        }
+
+        .step.active {
+            color: #762640;
+            font-weight: 600;
+        }
+
+        .step.active .step-number {
+            background: #762640;
+            color: white;
+            border-color: #762640;
+        }
+
+        .step-divider {
+            width: 35px;
+            height: 1px;
+            background: #e5cfd4;
+        }
+
+        .checkout-layout {
+            display: grid;
+            grid-template-columns: minmax(0, 1.5fr) minmax(280px, 0.9fr);
+            gap: 28px;
+            align-items: start;
+        }
+
+        .checkout-card {
+            background: #ffffff;
+            border: 1px solid #ead6d9;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 8px 28px rgba(77, 27, 45, 0.045);
+        }
+
+        .card-heading {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            margin-bottom: 25px;
+            padding-bottom: 18px;
+            border-bottom: 1px solid #f0e2e3;
+        }
+
+        .heading-icon {
+            display: grid;
+            place-items: center;
+            width: 42px;
+            height: 42px;
+            flex-shrink: 0;
+            border-radius: 50%;
+            background: #fff1f2;
+            font-size: 19px;
+        }
+
+        .card-heading h2 {
+            margin: 0;
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            color: #762640;
+            font-size: 29px;
+            font-weight: 500;
+        }
+
+        .card-heading p {
+            margin: 3px 0 0;
+            color: #967984;
+            font-size: 12px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0 16px;
+        }
+
+        .form-field {
+            min-width: 0;
+            margin-bottom: 18px;
+        }
+
+        .form-field.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-field label {
+            display: block;
+            margin-bottom: 8px;
+            color: #593344;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .form-field input,
+        .form-field textarea {
+            display: block;
+            width: 100%;
+            min-width: 0;
+            padding: 13px 14px;
+            border: 1px solid #e3cbd1;
+            border-radius: 6px;
+            outline: none;
+            background: #fffdfc;
+            color: #4d1b2d;
+            font-family: 'Poppins', Arial, sans-serif;
+            font-size: 13px;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .form-field input:focus,
+        .form-field textarea:focus {
+            border-color: #a34c69;
+            box-shadow: 0 0 0 3px rgba(163, 76, 105, 0.10);
+        }
+
+        .form-field input::placeholder,
+        .form-field textarea::placeholder {
+            color: #b39ba3;
+        }
+
+        .form-field textarea {
+            min-height: 105px;
+            resize: vertical;
+        }
+
+        .field-error {
+            display: block;
+            color: #a12626;
+            font-size: 12px;
+            margin-top: 6px;
+        }
+
+        .error-message {
+            background: #fff0f0;
+            border: 1px solid #e2aaaa;
+            color: #8b2020;
+            border-radius: 6px;
+            padding: 13px;
+            margin-bottom: 20px;
+            font-size: 13px;
+        }
+
+        .place-order-button {
+            display: block;
+            width: 100%;
+            border: none;
+            border-radius: 6px;
+            background: #762640;
+            color: white;
+            padding: 15px;
+            margin-top: 10px;
+            font-family: 'Poppins', Arial, sans-serif;
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.2s;
+        }
+
+        .place-order-button:hover {
+            background: #4d1b2d;
+            transform: translateY(-1px);
+        }
+
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 18px;
+            color: #762640;
+            font-size: 12px;
+            text-decoration: none;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        .order-card {
+            position: sticky;
+            top: 25px;
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            padding: 17px 0;
+            border-bottom: 1px solid #f0e2e3;
+            font-size: 12px;
+        }
+
+        .summary-product {
+            min-width: 0;
+        }
+
+        .summary-product strong {
+            display: block;
+            color: #593344;
+            font-weight: 500;
+            line-height: 1.6;
+            overflow-wrap: anywhere;
+        }
+
+        .summary-product span {
+            display: block;
+            margin-top: 5px;
+            color: #967984;
+        }
+
+        .summary-price {
+            flex-shrink: 0;
+            color: #762640;
+            font-weight: 500;
+        }
+
+        .summary-line {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            margin-top: 15px;
+            font-size: 13px;
+        }
+
+        .summary-line span:first-child {
+            color: #806572;
+        }
+
+        .summary-total {
+            border-top: 1px solid #ead6d9;
+            margin-top: 20px;
+            padding-top: 20px;
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .summary-total span {
+            color: #762640 !important;
+        }
+
+        .payment-note {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            background: #fff7f3;
+            border: 1px solid #f0e2df;
+            border-radius: 7px;
+            padding: 13px;
+            margin-top: 22px;
+            color: #8b6873;
+            font-size: 11px;
+            line-height: 1.7;
+        }
+
+        .payment-note span {
+            flex-shrink: 0;
+        }
+
+        .empty-order {
+            padding: 20px 0;
+            color: #8b6873;
+            font-size: 13px;
+            line-height: 1.8;
+        }
+
+        .empty-order a {
+            color: #762640;
+        }
+
+        .checkout-footer {
+            padding: 24px 20px;
+            background: #4d1b2d;
+            color: #f8e9ed;
+            text-align: center;
+            font-size: 11px;
+            letter-spacing: 0.5px;
+        }
+
+        @media (max-width: 850px) {
+            .checkout-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .order-card {
+                position: static;
+            }
+        }
+
+        @media (max-width: 520px) {
+            .checkout-page {
+                margin-top: 28px;
+                padding: 0 14px;
+            }
+
+            .checkout-card {
+                padding: 21px 17px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-field.full-width {
+                grid-column: auto;
+            }
+
+            .checkout-steps {
+                gap: 7px;
+                font-size: 10px;
+            }
+
+            .step-divider {
+                width: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+
+<!-- HEADER -->
+
+    {% include "boutique/partials/navbar.html" %}
+
+
+
+<main class="checkout-page">
+
+    <section class="checkout-heading">
+        <span class="eyebrow">A little closer to beautiful</span>
+        <h1>Complete Your Order</h1>
+        <p>Share your delivery details and we'll take it from here.</p>
+
+        <div class="checkout-steps">
+            <div class="step">
+                <span class="step-number">✓</span>
+                <span>My Bag</span>
+            </div>
+
+            <span class="step-divider"></span>
+
+            <div class="step active">
+                <span class="step-number">2</span>
+                <span>Checkout</span>
+            </div>
+
+            <span class="step-divider"></span>
+
+            <div class="step">
+                <span class="step-number">3</span>
+                <span>Confirmation</span>
+            </div>
+        </div>
+    </section>
+
+    <div class="checkout-layout">
+
+        <section class="checkout-card">
+            <div class="card-heading">
+                <div class="heading-icon">♡</div>
+                <div>
+                    <h2>Delivery Details</h2>
+                    <p>Where should we send your order?</p>
+                </div>
+            </div>
+
+            {% if errors.general %}
+                <div class="error-message">{{ errors.general }}</div>
+            {% endif %}
+
+            <form method="POST" action="{% url 'checkout' %}">
+                {% csrf_token %}
+
+                <div class="form-grid">
+
+                    <div class="form-field full-width">
+                        <label for="customer_name">Full name *</label>
+                        <input id="customer_name"
+                               name="customer_name"
+                               type="text"
+                               value="{{ form_data.customer_name|default:'' }}"
+                               maxlength="150"
+                               autocomplete="name"
+                               placeholder="Enter your full name"
+                               required>
+                        {% if errors.customer_name %}
+                            <span class="field-error">{{ errors.customer_name }}</span>
+                        {% endif %}
+                    </div>
+
+                    <div class="form-field">
+                        <label for="phone">Phone number *</label>
+                        <input id="phone"
+                               name="phone"
+                               type="tel"
+                               value="{{ form_data.phone|default:'' }}"
+                               maxlength="20"
+                               autocomplete="tel"
+                               placeholder="Your contact number"
+                               required>
+                        {% if errors.phone %}
+                            <span class="field-error">{{ errors.phone }}</span>
+                        {% endif %}
+                    </div>
+
+                    <div class="form-field">
+                        <label for="email">Email address</label>
+                        <input id="email"
+                               name="email"
+                               type="email"
+                               value="{{ form_data.email|default:'' }}"
+                               maxlength="254"
+                               autocomplete="email"
+                               placeholder="you@example.com">
+                        {% if errors.email %}
+                            <span class="field-error">{{ errors.email }}</span>
+                        {% endif %}
+                    </div>
+
+                    <div class="form-field full-width">
+                        <label for="address">Full delivery address *</label>
+                        <textarea id="address"
+                                  name="address"
+                                  autocomplete="street-address"
+                                  placeholder="House number, street, area and landmark"
+                                  required>{{ form_data.address|default:'' }}</textarea>
+                        {% if errors.address %}
+                            <span class="field-error">{{ errors.address }}</span>
+                        {% endif %}
+                    </div>
+
+                    <div class="form-field">
+                        <label for="city">City *</label>
+                        <input id="city"
+                               name="city"
+                               type="text"
+                               value="{{ form_data.city|default:'' }}"
+                               maxlength="100"
+                               autocomplete="address-level2"
+                               placeholder="Your city"
+                               required>
+                        {% if errors.city %}
+                            <span class="field-error">{{ errors.city }}</span>
+                        {% endif %}
+                    </div>
+
+                    <div class="form-field">
+                        <label for="state">State *</label>
+                        <input id="state"
+                               name="state"
+                               type="text"
+                               value="{{ form_data.state|default:'' }}"
+                               maxlength="100"
+                               autocomplete="address-level1"
+                               placeholder="Your state"
+                               required>
+                        {% if errors.state %}
+                            <span class="field-error">{{ errors.state }}</span>
+                        {% endif %}
+                    </div>
+
+                    <div class="form-field full-width">
+                        <label for="pincode">6-digit PIN code *</label>
+                        <input id="pincode"
+                               name="pincode"
+                               type="text"
+                               inputmode="numeric"
+                               value="{{ form_data.pincode|default:'' }}"
+                               pattern="[0-9]{6}"
+                               maxlength="6"
+                               autocomplete="postal-code"
+                               placeholder="Enter your 6-digit PIN code"
+                               required>
+                        {% if errors.pincode %}
+                            <span class="field-error">{{ errors.pincode }}</span>
+                        {% endif %}
+                    </div>
+
+                </div>
+
+                <button type="submit" class="place-order-button">
+                    Place My Order&nbsp; → 
+                </button>
+            </form>
+
+            <a href="{% url 'cart' %}" class="back-link">
+                ← Return to My Bag
+            </a>
+        </section>
+
+        <aside class="checkout-card order-card">
+            <div class="card-heading">
+                <div class="heading-icon">✧</div>
+                <div>
+                    <h2>Your Order</h2>
+                    <p>A little something special for you.</p>
+                </div>
+            </div>
+
+            {% if items %}
+                {% for item in items %}
+                    <div class="summary-item">
+                        <div class="summary-product">
+                            <strong>{{ item.product.name }}</strong>
+                            <span>Quantity: {{ item.quantity }}</span>
+                        </div>
+
+                        <div class="summary-price">
+                            ₹{{ item.subtotal|floatformat:2 }}
+                        </div>
+                    </div>
+                {% endfor %}
+
+                <div class="summary-line">
+                    <span>Subtotal</span>
+                    <span>₹{{ total|floatformat:2 }}</span>
+                </div>
+
+                <div class="summary-line">
+                    <span>Delivery</span>
+                    <span>To be confirmed</span>
+                </div>
+
+                <div class="summary-line summary-total">
+                    <span>Total</span>
+                    <span>₹{{ total|floatformat:2 }}</span>
+                </div>
+
+                <div class="payment-note">
+                    <span>♡</span>
+                    <div>
+                        This is a demo store. Placing an order records it
+                        through the website; online payment is not processed.
+                    </div>
+                </div>
+            {% else %}
+                <div class="empty-order">
+                    Your bag is currently empty.
+                    <a href="{% url 'anarkalis' %}">Explore our collection</a>
+                    to find something you love.
+                </div>
+            {% endif %}
+        </aside>
+
+    </div>
+</main>
+
+<footer class="checkout-footer">
+    THE ALANKAARA · Crafted with love, inspired by tradition.
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,36 @@
+THE ALANKAARA — Dataset Validation Report (v1)
+================================================
+
+{
+  "scenario_rows": 300,
+  "unique_scenarios": 300,
+  "unique_product_ids_in_scenarios": 48,
+  "missing_values": 0,
+  "duplicate_scenario_ids": 0,
+  "nonpositive_prices": 0,
+  "labels": {
+    "recommended": 200,
+    "not_recommended": 100
+  },
+  "label_sources": {
+    "synthetic_rule_based": 300
+  },
+  "product_sources": {
+    "curated_archetype": 277,
+    "project_catalog_seed": 23
+  },
+  "notes": [
+    "This is a starter dataset, not yet suitable as evidence of real-world recommendation accuracy.",
+    "300 scenario-product pairs are synthetic and labels are heuristic weak labels.",
+    "Only four product records are from the current project catalogue; some unspecified attributes remain unverified.",
+    "Curated archetype records and their prices are illustrative placeholders, not verified market listings.",
+    "Before training, manually review labels and collect real product attributes / human preference judgements."
+  ]
+}
+
+Recommended next steps:
+1. Review category/occasion/weather rules with domain judgement.
+2. Replace illustrative prices with sourced product prices where possible.
+3. Add human-reviewed labels or user feedback before claiming model quality.
+4. Split train/test by product_id, not random rows, to reduce product leakage.
+5. Do not treat synthetic-rule accuracy as real-world recommendation accuracy.

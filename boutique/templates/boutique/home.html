@@ -1,0 +1,278 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>THE ALANKAARA | The Art of Indian Elegance</title>
+    <meta name="description" content="Discover Indian ethnic wear, jewellery, footwear and handbags at THE ALANKAARA.">
+
+    {% load static %}
+
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    {% include "boutique/partials/navbar.html" %}
+
+    <main>
+
+        <!-- HERO SECTION -->
+        <section class="hero">
+            <div class="hero-content">
+                <p class="section-label">ROOTED IN TRADITION, MADE FOR YOU</p>
+
+                <h1>Tradition woven with timeless beauty.</h1>
+
+                <p>
+                    Discover Indian fashion that celebrates your individuality,
+                    your occasions and your unique sense of style.
+                </p>
+
+                <div class="hero-buttons">
+                    <a href="{% url 'all_collections' %}" class="btn-primary">
+                        Explore Collections
+                    </a>
+
+                    
+                </div>
+            </div>
+
+            <div class="hero-image">
+                <div class="hero-image-placeholder">
+                    <span>THE ALANKAARA</span>
+                    <p>A celebration of Indian elegance</p>
+                    <small>Your chosen hero image will go here</small>
+                </div>
+            </div>
+        </section>
+
+        <!-- BRAND PROMISE -->
+        <section class="brand-promise">
+            <div>
+                <h3>Tradition</h3>
+                <p>Inspired by India's rich heritage</p>
+            </div>
+
+            <div>
+                <h3>Individuality</h3>
+                <p>Style that feels uniquely yours</p>
+            </div>
+
+            <div>
+                <h3>Elegance</h3>
+                <p>For moments worth remembering</p>
+            </div>
+        </section>
+
+        <!-- COLLECTION CATEGORIES -->
+        <section class="collections-section" id="collections">
+            <div class="section-heading">
+                <p class="section-label">EXPLORE OUR WORLD</p>
+                <h2>Find Your Expression</h2>
+                <p>From everyday elegance to unforgettable celebrations.</p>
+            </div>
+
+            <div class="collections-grid">
+                <a href="{% url 'collection' 'sarees' %}" class="collection-card sarees">
+                    <span>01</span>
+                    <h3>Sarees</h3>
+                    <p>Timeless drapes</p>
+                </a>
+
+                <a href="{% url 'collection' 'lehengas' %}" class="collection-card lehengas">
+                    <span>02</span>
+                    <h3>Lehengas</h3>
+                    <p>Made for celebrations</p>
+                </a>
+
+                <a href="{% url 'anarkalis' %}" class="collection-card anarkalis">
+                    <span>03</span>
+                    <h3>Anarkalis</h3>
+                    <p>Grace in every movement</p>
+                </a>
+
+                <a href="{% url 'collection' 'kurtis' %}" class="collection-card kurtis">
+                    <span>04</span>
+                    <h3>Kurtis</h3>
+                    <p>Everyday Indian style</p>
+                </a>
+
+                <a href="{% url 'collection' 'coord-sets' %}" class="collection-card coord-sets">
+                    <span>05</span>
+                    <h3>Co-ord Sets</h3>
+                    <p>Effortless coordination</p>
+                </a>
+
+                <a href="{% url 'collection' 'indo-western' %}" class="collection-card indo-western">
+                    <span>06</span>
+                    <h3>Indo-Western</h3>
+                    <p>Where cultures meet</p>
+                </a>
+
+                <a href="{% url 'collection' 'dupattas' %}" class="collection-card dupattas">
+                    <span>07</span>
+                    <h3>Dupattas</h3>
+                    <p>The finishing touch</p>
+                </a>
+
+                <a href="{% url 'collection' 'jewellery' %}" class="collection-card jewellery">
+                    <span>08</span>
+                    <h3>Jewellery</h3>
+                    <p>Details that shine</p>
+                </a>
+
+                <a href="{% url 'collection' 'footwear' %}" class="collection-card footwear">
+                    <span>09</span>
+                    <h3>Footwear</h3>
+                    <p>Step into elegance</p>
+                </a>
+
+                <a href="{% url 'collection' 'handbags' %}" class="collection-card handbags">
+                    <span>10</span>
+                    <h3>Handbags</h3>
+                    <p>Beauty meets function</p>
+                </a>
+            </div>
+        </section>
+
+        <!-- PRODUCTS FROM DATABASE -->
+        <section class="products-section" id="shop">
+            <div class="section-heading">
+                <p class="section-label">THE ALANKAARA COLLECTION</p>
+                <h2>Pieces to Treasure</h2>
+                <p>Discover something beautiful for every occasion.</p>
+            </div>
+
+            <div class="products-grid">
+                {% for product in products %}
+                    <article class="product-card">
+
+                        <a href="{% url 'product_detail' product.id %}"
+                           class="product-card-link"
+                           aria-label="View {{ product.name }}">
+
+                            <div class="product-image">
+                                {% if product.image %}
+                                    <img
+                                        src="{{ product.image.url }}"
+                                        alt="{{ product.name }}"
+                                    >
+                                {% else %}
+                                    <div class="product-image-placeholder">
+                                        <span>THE ALANKAARA</span>
+                                        <p>Image coming soon</p>
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <div class="product-info">
+                                <p class="product-category">
+                                    {{ product.get_category_display }}
+                                </p>
+
+                                <h3>{{ product.name }}</h3>
+
+                                <p class="product-description">
+                                    {{ product.description }}
+                                </p>
+
+                                <p class="product-price">
+                                    ₹{{ product.price|floatformat:2 }}
+                                </p>
+
+                                {% if product.sizes %}
+                                    <p class="product-detail">
+                                        Sizes: {{ product.sizes }}
+                                    </p>
+                                {% endif %}
+
+                                {% if product.color %}
+                                    <p class="product-detail">
+                                        Colour: {{ product.color }}
+                                    </p>
+                                {% endif %}
+                            </div>
+                        </a>
+
+                        <div class="product-info">
+                            <a href="{% url 'product_detail' product.id %}"
+                               class="product-button">
+                                View Product
+                            </a>
+                        </div>
+
+                    </article>
+                {% empty %}
+                    <div class="empty-products">
+                        <h3>Your collection begins here</h3>
+                        <p>
+                            Our collection is being prepared.
+                            Check back soon for beautiful new pieces.
+                        </p>
+                    </div>
+                {% endfor %}
+            </div>
+        </section>
+
+        <!-- STYLE STUDIO -->
+        <section class="style-studio" id="style-studio">
+            <div class="section-heading">
+                <p class="section-label">YOUR PERSONAL STYLE GUIDE</p>
+                <h2>Welcome to the Style Studio</h2>
+                <p>
+                    Discover outfits for your occasions, budget,
+                    preferences and the weather.
+                </p>
+            </div>
+
+            <div class="style-studio-content">
+                <p>
+                    Your style should feel like you. We're creating a
+                    personalised experience to help you discover pieces
+                    that suit your plans and preferences.
+                </p>
+
+                <span class="coming-soon-label">
+                    PERSONAL STYLE RECOMMENDATIONS — COMING SOON
+                </span>
+            </div>
+        </section>
+
+        <!-- OUR STORY -->
+        <section class="about-section" id="about">
+            <div class="section-heading">
+                <p class="section-label">OUR STORY</p>
+                <h2>The Art of Indian Elegance</h2>
+            </div>
+
+            <p class="about-description">
+                THE ALANKAARA celebrates the beauty of Indian fashion,
+                bringing together tradition, contemporary style and
+                thoughtful personal expression. We believe every outfit
+                can tell a story, and every detail can make it special.
+            </p>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <a href="{% url 'home' %}" class="footer-brand">
+            THE ALANKAARA
+        </a>
+
+        <p>The Art of Indian Elegance</p>
+
+        <p class="footer-copy">
+            &copy; 2026 THE ALANKAARA. All rights reserved.
+        </p>
+    </footer>
+
+</body>
+</html>

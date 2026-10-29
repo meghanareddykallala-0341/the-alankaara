@@ -1,0 +1,174 @@
+{% extends "boutique/base.html" %}
+
+{% block title %}Login | THE ALANKAARA{% endblock %}
+
+{% block extra_css %}
+<style>
+    .auth-page {
+        min-height: 75vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 45px 18px;
+        background: #fffaf7;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    .auth-card {
+        width: 100%;
+        max-width: 460px;
+        padding: 38px;
+        background: white;
+        border: 1px solid #ead6d9;
+        border-radius: 12px;
+        box-shadow: 0 10px 35px rgba(99, 35, 59, 0.08);
+    }
+
+    .auth-label {
+        color: #a34c69;
+        font-size: 11px;
+        letter-spacing: 3px;
+        text-align: center;
+    }
+
+    .auth-card h1 {
+        margin: 10px 0;
+        color: #63233b;
+        font: 500 42px 'Cormorant Garamond', Georgia, serif;
+        text-align: center;
+    }
+
+    .auth-description {
+        margin-bottom: 25px;
+        color: #76545f;
+        font-size: 13px;
+        line-height: 1.8;
+        text-align: center;
+    }
+
+    .auth-field {
+        margin-bottom: 17px;
+    }
+
+    .auth-field label {
+        display: block;
+        margin-bottom: 7px;
+        color: #63233b;
+        font-size: 12px;
+    }
+
+    .auth-field input {
+        box-sizing: border-box;
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #d8b9c2;
+        border-radius: 5px;
+        font: 13px 'Poppins', sans-serif;
+    }
+
+    .auth-field input:focus {
+        outline: 2px solid #ead6d9;
+        border-color: #762640;
+    }
+
+    .auth-button {
+        width: 100%;
+        padding: 13px;
+        border: none;
+        border-radius: 5px;
+        background: #762640;
+        color: white;
+        font: 13px 'Poppins', sans-serif;
+        cursor: pointer;
+    }
+
+    .auth-button:hover {
+        background: #4d1b2d;
+    }
+
+    .auth-error {
+        margin-top: 6px;
+        color: #b42318;
+        font-size: 12px;
+    }
+
+    .auth-footer {
+        margin-top: 22px;
+        color: #76545f;
+        font-size: 12px;
+        text-align: center;
+    }
+
+    .auth-footer a {
+        color: #762640;
+        font-weight: 600;
+    }
+
+    .auth-messages {
+        margin-bottom: 16px;
+        color: #762640;
+        font-size: 13px;
+    }
+
+    @media (max-width: 480px) {
+        .auth-card {
+            padding: 25px 20px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<main class="auth-page">
+    <section class="auth-card">
+        <p class="auth-label">WELCOME BACK</p>
+        <h1>Login</h1>
+        <p class="auth-description">
+            Sign in to continue your THE ALANKAARA experience.
+        </p>
+
+        {% if messages %}
+            <div class="auth-messages">
+                {% for message in messages %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <form method="post">
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+                <div class="auth-error">
+                    {{ form.non_field_errors }}
+                </div>
+            {% endif %}
+
+            <div class="auth-field">
+                <label for="{{ form.username.id_for_label }}">Username</label>
+                {{ form.username }}
+                {% for error in form.username.errors %}
+                    <p class="auth-error">{{ error }}</p>
+                {% endfor %}
+            </div>
+
+            <div class="auth-field">
+                <label for="{{ form.password.id_for_label }}">Password</label>
+                {{ form.password }}
+                {% for error in form.password.errors %}
+                    <p class="auth-error">{{ error }}</p>
+                {% endfor %}
+            </div>
+
+            <button type="submit" class="auth-button">
+                Login to Your Account
+            </button>
+        </form>
+
+        <p class="auth-footer">
+            Don't have an account?
+            <a href="{% url 'register' %}">Create an account</a>
+        </p>
+    </section>
+</main>
+{% endblock %}
